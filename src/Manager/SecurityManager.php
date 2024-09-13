@@ -26,7 +26,7 @@ class SecurityManager extends AbstractController
     public function login(array $data): array
     {
 
-        $user = $this->userRepository->findOneBy(['email' => $data['username']]);
+        $user = $this->userRepository->findOneBy(['email' => $data['email']]);
 
         if (!$user) {
             throw new Exception("Error no user found");
@@ -37,13 +37,13 @@ class SecurityManager extends AbstractController
             throw new Exception("Error no user found");
         }
 
-        // $token = $this->JWTTokenManager->create($user);
+        $token = $this->JWTTokenManager->create($user);
         $response = [
             'id' => $user->getId(),
-            'username' => $user->getEmail(),
+            'email' => $user->getEmail(),
             'firstname' => $user->getFirstname(),
             'lastname' => $user->getLastname(),
-            // 'token' => $token,
+            'token' => $token,
             'roles' => $user->getRoles(),
             'created_at' => $user->getCreatedAt(),
         ];
