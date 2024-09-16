@@ -59,30 +59,30 @@ class Recipe
     private Collection $upVote;
 
     /**
-     * @var Collection<int, type>
+     * @var Collection<int, Type>
      */
-    #[ORM\ManyToMany(targetEntity: type::class, inversedBy: 'recipes')]
+    #[ORM\ManyToMany(targetEntity: Type::class, inversedBy: 'recipes')]
     #[Groups(['recipe_information'])]
     private Collection $type;
 
     /**
-     * @var Collection<int, categories>
+     * @var Collection<int, Categories>
      */
-    #[ORM\ManyToMany(targetEntity: categories::class, inversedBy: 'recipes')]
+    #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'recipes')]
     #[Groups(['recipe_information'])]
     private Collection $categories;
 
     /**
-     * @var Collection<int, step>
+     * @var Collection<int, Step>
      */
-    #[ORM\OneToMany(targetEntity: step::class, mappedBy: 'recipe')]
+    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'recipe')]
     #[Groups(['recipe_information'])]
     private Collection $step;
 
     /**
-     * @var Collection<int, ingredient>
+     * @var Collection<int, Ingredient>
      */
-    #[ORM\OneToMany(targetEntity: ingredient::class, mappedBy: 'recipe', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Ingredient::class, mappedBy: 'recipe', orphanRemoval: true)]
     #[Groups(['recipe_information'])]
     private Collection $ingredient;
 
@@ -227,14 +227,14 @@ class Recipe
     }
 
     /**
-     * @return Collection<int, type>
+     * @return Collection<int, Type>
      */
     public function getType(): Collection
     {
         return $this->type;
     }
 
-    public function addType(type $type): static
+    public function addType(Type $type): static
     {
         if (!$this->type->contains($type)) {
             $this->type->add($type);
@@ -243,7 +243,7 @@ class Recipe
         return $this;
     }
 
-    public function removeType(type $type): static
+    public function removeType(Type $type): static
     {
         $this->type->removeElement($type);
 
@@ -251,14 +251,14 @@ class Recipe
     }
 
     /**
-     * @return Collection<int, categories>
+     * @return Collection<int, Categories>
      */
     public function getCategories(): Collection
     {
         return $this->categories;
     }
 
-    public function addCategory(categories $category): static
+    public function addCategory(Categories $category): static
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
@@ -267,7 +267,7 @@ class Recipe
         return $this;
     }
 
-    public function removeCategory(categories $category): static
+    public function removeCategory(Categories $category): static
     {
         $this->categories->removeElement($category);
 
@@ -277,14 +277,14 @@ class Recipe
 
 
     /**
-     * @return Collection<int, step>
+     * @return Collection<int, Step>
      */
     public function getStep(): Collection
     {
         return $this->step;
     }
 
-    public function addStep(step $step): static
+    public function addStep(Step $step): static
     {
         if (!$this->step->contains($step)) {
             $this->step->add($step);
@@ -294,7 +294,7 @@ class Recipe
         return $this;
     }
 
-    public function removeStep(step $step): static
+    public function removeStep(Step $step): static
     {
         if ($this->step->removeElement($step)) {
             // set the owning side to null (unless already changed)
@@ -307,14 +307,14 @@ class Recipe
     }
 
     /**
-     * @return Collection<int, ingredient>
+     * @return Collection<int, Ingredient>
      */
     public function getIngredient(): Collection
     {
         return $this->ingredient;
     }
 
-    public function addIngredient(ingredient $ingredient): static
+    public function addIngredient(Ingredient $ingredient): static
     {
         if (!$this->ingredient->contains($ingredient)) {
             $this->ingredient->add($ingredient);
@@ -324,7 +324,7 @@ class Recipe
         return $this;
     }
 
-    public function removeIngredient(ingredient $ingredient): static
+    public function removeIngredient(Ingredient $ingredient): static
     {
         if ($this->ingredient->removeElement($ingredient)) {
             // set the owning side to null (unless already changed)

@@ -52,15 +52,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $dgprAcceptationDate = null;
 
     /**
-     * @var Collection<int, recipe>
+     * @var Collection<int, Recipe>
      */
-    #[ORM\OneToMany(targetEntity: recipe::class, mappedBy: 'userID')]
+    #[ORM\OneToMany(targetEntity: Recipe::class, mappedBy: 'userID')]
     private Collection $recipe;
 
     /**
-     * @var Collection<int, upVote>
+     * @var Collection<int, UpVote>
      */
-    #[ORM\OneToMany(targetEntity: upVote::class, mappedBy: 'userID')]
+    #[ORM\OneToMany(targetEntity: UpVote::class, mappedBy: 'userID')]
     private Collection $upVote;
 
     public function __construct()
@@ -192,14 +192,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, recipe>
+     * @return Collection<int, Recipe>
      */
     public function getRecipe(): Collection
     {
         return $this->recipe;
     }
 
-    public function addRecipe(recipe $recipe): static
+    public function addRecipe(Recipe $recipe): static
     {
         if (!$this->recipe->contains($recipe)) {
             $this->recipe->add($recipe);
@@ -209,7 +209,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeRecipe(recipe $recipe): static
+    public function removeRecipe(Recipe $recipe): static
     {
         if ($this->recipe->removeElement($recipe)) {
             // set the owning side to null (unless already changed)
@@ -222,14 +222,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, upVote>
+     * @return Collection<int, UpVote>
      */
     public function getUpVote(): Collection
     {
         return $this->upVote;
     }
 
-    public function addUpVote(upVote $upVote): static
+    public function addUpVote(UpVote $upVote): static
     {
         if (!$this->upVote->contains($upVote)) {
             $this->upVote->add($upVote);
@@ -239,7 +239,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeUpVote(upVote $upVote): static
+    public function removeUpVote(UpVote $upVote): static
     {
         if ($this->upVote->removeElement($upVote)) {
             // set the owning side to null (unless already changed)

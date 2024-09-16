@@ -9,14 +9,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/api')]
 class SecurityController extends AbstractController
 {
     public function __construct(
         private SecurityManager $securityManager
     ) {}
 
-    #[Route('/api/login', name: 'api_security_login', methods: 'POST')]
-    public function login(Request $request): JsonResponse
+    #[Route('/login', name: 'api_security_login', methods: 'POST')]
+    public function  login(Request $request): JsonResponse
     {
 
         try {
@@ -31,7 +32,7 @@ class SecurityController extends AbstractController
         }
     }
 
-    #[Route('/api/register', name: 'api_security_register', methods: 'POST')]
+    #[Route('/register', name: 'api_security_register', methods: 'POST')]
     public function register(Request $request): JsonResponse
     {
 
