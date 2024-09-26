@@ -22,7 +22,7 @@ class UpVote
 
     #[ORM\ManyToOne(inversedBy: 'upVote')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['recipe_information'])]
+    // #[Groups(['recipe_information'])]
     private ?Recipe $recipe = null;
 
     public function getId(): ?int

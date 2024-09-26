@@ -17,7 +17,7 @@ class Ingredient
 
     #[ORM\Column]
     #[Groups(['recipe_information'])]
-    private ?float $quantity = null;
+    private ?string $quantity = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['recipe_information'])]
@@ -32,12 +32,12 @@ class Ingredient
         return $this->id;
     }
 
-    public function getQuantity(): ?float
+    public function getQuantity(): ?string
     {
         return $this->quantity;
     }
 
-    public function setQuantity(float $quantity): static
+    public function setQuantity(string $quantity): static
     {
         $this->quantity = $quantity;
 

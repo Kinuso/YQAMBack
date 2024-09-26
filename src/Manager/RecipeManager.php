@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Ingredient;
 use App\Entity\Recipe;
 use App\Entity\Step;
+use App\Entity\UpVote;
 use App\Entity\User;
 use App\Repository\CategoriesRepository;
 use App\Repository\RecipeRepository;
@@ -28,6 +29,11 @@ class RecipeManager
         return $this->recipeRepository->findAll();
     }
 
+    public function specific(string $title): Recipe
+    {
+        return $this->recipeRepository->findOneBy(["title" => $title]);
+    }
+
     public function new(array $data): Recipe
     {
         $recipe = new Recipe;
@@ -47,6 +53,8 @@ class RecipeManager
     }
 
 
+
+
     private function recipeCredentials(array $data, recipe $recipe): Recipe
     {
 
@@ -59,15 +67,17 @@ class RecipeManager
         $fat = $data["fat"];
         $calories = $data["calories"];
         $forHowManyPeople = $data["forHowManyPeople"];
+        $imageUrl = $data["imgUrl"];
 
         $recipe->setUserID($user);
         $recipe->setTitle($title);
         $recipe->setDescription($description);
-        $recipe->setCarbs($carbs);
         $recipe->setProtein($protein);
+        $recipe->setCarbs($carbs);
         $recipe->setFat($fat);
         $recipe->setCalories($calories);
         $recipe->setForHowManyPeople($forHowManyPeople);
+        $recipe->setImageUrl($imageUrl);
 
         $categories = $data["categories"];
         foreach ($categories as $categoryData) {
@@ -89,9 +99,8 @@ class RecipeManager
         $steps = $data["steps"];
         $i = 1;
         foreach ($steps as $stepData) {
-
             $step = new Step;
-            $step->setDescription($stepData);
+            $step->setDescription($stepData["name"]);
             $step->setNumber($i);
             $step->setRecipe($recipe);
             $i++;

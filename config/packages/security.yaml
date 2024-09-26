@@ -35,6 +35,10 @@ security:
   access_control:
     - { path: ^/admin, roles: ROLE_ADMIN }
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api/recipes, roles: PUBLIC_ACCESS }
+    - { path: ^/api/recipe/, roles: PUBLIC_ACCESS }
+    - { path: ^/api/recipe/admin, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/upVote/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
   security:

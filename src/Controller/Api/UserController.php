@@ -10,8 +10,8 @@ class UserController extends AbstractController {
     public function __construct() {}
 
 
-    #[Route('api/recipes', name: 'app_api_all_recipes')]
-    public function index()
-    {}
+    // #[Route('api/recipes', name: 'app_api_all_recipes')]
+    // public function index()
+    // {}
 
 }

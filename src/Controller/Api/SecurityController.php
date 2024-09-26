@@ -25,7 +25,7 @@ class SecurityController extends AbstractController
             $data = json_decode($request->getContent(), true);
             $response = $this->securityManager->login($data);
 
-            return $this->json(['status' => 'success', 'loginInfo' => $response], Response::HTTP_OK);
+            return $this->json($response, Response::HTTP_CREATED);
 
         } catch (\Exception $e) {
             return $this->json(['status'=>'error', 'message' => $e->getMessage()],Response::HTTP_BAD_REQUEST);
