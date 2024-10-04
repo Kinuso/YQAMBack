@@ -99,7 +99,19 @@ class RecipeController extends AbstractController
         }
     }
 
-    #[Route('/{title}', name: 'app_api_specific_recipe')]
+    #[Route('/search', name: 'app_api_search_recipe')]
+    public function search(Request $request, RecipeRepository $recipeRepository): JsonResponse
+    {
+        try {
+            $searchValue = $request->query->get('searchValue', '');
+
+            return $this->json(['status' => 'success', 'recipes' => $recipeRepository->findBySearch($searchValue)], Response::HTTP_OK, [], ['groups' => "recipe_information"]);
+        } catch (\Exception $e) {
+            return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/specific/{title}', name: 'app_api_specific_recipe')]
     public function specific(string $title): JsonResponse
     {
         try {

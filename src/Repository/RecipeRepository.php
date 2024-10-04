@@ -24,6 +24,16 @@ class RecipeRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findBySearch(string $searchValue): array
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->where('r.title LIKE :searchValue')
+            ->orWhere('r.description LIKE :searchValue')
+            ->setParameter('searchValue', '%' . $searchValue . '%');
+
+        return $qb->getQuery()->getResult();
+    }
+
     //    /**
     //     * @return Recipe[] Returns an array of Recipe objects
     //     */
