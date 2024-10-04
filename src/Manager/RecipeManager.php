@@ -12,6 +12,7 @@ use App\Repository\RecipeRepository;
 use App\Repository\TypeRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 class RecipeManager
 {
@@ -38,6 +39,10 @@ class RecipeManager
     {
         $recipe = new Recipe;
 
+        if ($this->recipeRepository->findOneBy(['title' => $data["title"]])) {
+            throw new Exception("Recette déjà existante");
+        }
+
         $recipe = $this->recipeCredentials($data, $recipe);
 
         return $recipe;
@@ -60,14 +65,14 @@ class RecipeManager
 
         $user = new User;
         $user = $this->userRepository->findOneBy(['email' => $data["user"]]);
-        $title = $data["title"];
-        $description = $data["description"];
-        $carbs = $data["carbs"];
-        $protein = $data["protein"];
-        $fat = $data["fat"];
-        $calories = $data["calories"];
-        $forHowManyPeople = $data["forHowManyPeople"];
-        $imageUrl = $data["imgUrl"];
+        $title = htmlspecialchars(strip_tags(trim($data["title"])));
+        $description = htmlspecialchars(strip_tags(trim($data["description"])));
+        $carbs = htmlspecialchars(strip_tags(trim($data["carbs"])));
+        $protein = htmlspecialchars(strip_tags(trim($data["protein"])));
+        $fat = htmlspecialchars(strip_tags(trim($data["fat"])));
+        $calories = htmlspecialchars(strip_tags(trim($data["calories"])));
+        $forHowManyPeople = htmlspecialchars(strip_tags(trim($data["forHowManyPeople"])));
+        $imageUrl = htmlspecialchars(strip_tags(trim($data["imgUrl"])));
 
         $recipe->setUserID($user);
         $recipe->setTitle($title);

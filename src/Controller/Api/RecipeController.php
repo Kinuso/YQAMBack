@@ -52,8 +52,7 @@ class RecipeController extends AbstractController
 
             $data = json_decode($request->getContent(), true);
             $this->recipeManager->new($data);
-
-            return $this->json(['status' => 'success'], Response::HTTP_OK, [], ['groups' => "recipe_information"]);
+            return $this->json(['status' => 'success', 'message' => 'Recette créée'], Response::HTTP_OK, [], ['groups' => "recipe_information"]);
         } catch (\Exception $e) {
             return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -67,7 +66,7 @@ class RecipeController extends AbstractController
             $data = json_decode($request->getContent(), true);
             $this->recipeManager->update($data);
 
-            return $this->json(['status' => 'success'], Response::HTTP_OK, [], ['groups' => "recipe_information"]);
+            return $this->json(['status' => 'success', 'message' => 'Recette éditée'], Response::HTTP_OK, [], ['groups' => "recipe_information"]);
         } catch (\Exception $e) {
             return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }

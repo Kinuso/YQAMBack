@@ -8,12 +8,7 @@ services:
     autoconfigure: true
     public: false
 
-  App\Controller\Api\RecipeController:
-    class: App\Controller\Api\RecipeController
-    autowire: true
-    autoconfigure: true
-    tags:
-      - { name: controller.service_arguments }
+ 
 
   # makes classes in src/ available to be used as services
   App\:
