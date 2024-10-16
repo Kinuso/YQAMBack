@@ -33,7 +33,7 @@ class UpVoteManager
         return $upVote;
     }
 
-    public function removeUpVote(array $data): UpVote
+    public function removeUpVote(array $data): void
     {
         $recipe = $this->recipeRepository->findOneBy(["id" => $data["recipeId"]]);
         $upVote = $this->upVoteRepository->findOneBy(["userID" => $data["userId"], "recipe" => $recipe]);
@@ -41,8 +41,7 @@ class UpVoteManager
         $this->entityManagerInterface->remove($upVote);
         $this->entityManagerInterface->flush();
 
-
-        return $upVote;
+        return;
     }
 
     public function isUpVotedByUser(array $data): bool
@@ -55,5 +54,12 @@ class UpVoteManager
         } else {
             return false;
         }
+    }
+
+    public function liked($data): array
+    {
+        $recipes = $this->upVoteRepository->findBy(["userID" => $data]);
+
+        return $recipes;
     }
 }

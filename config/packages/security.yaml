@@ -36,6 +36,7 @@ security:
     - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api/recipe/admin, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api/upVote/, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/updateAccount, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
   security:

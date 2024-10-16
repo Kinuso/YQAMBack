@@ -33,11 +33,14 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recent', name: 'app_api_recent_recipes')]
-    public function recent(RecipeRepository $recipeRepository): JsonResponse
+    public function recent(Request $request, RecipeRepository $recipeRepository): JsonResponse
     {
         try {
 
-            return $this->json(['status' => 'success', 'recipes' => $recipeRepository->recent()], Response::HTTP_OK, [], ['groups' => "recipe_information"]);
+            $data = json_decode($request->getContent(), true);
+            $recipes = $recipeRepository->recent($data);
+
+            return $this->json(['status' => 'success', 'recipes' => $recipes], Response::HTTP_OK, [], ['groups' => "recipe_information"]);
         } catch (\Exception $e) {
             return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -58,7 +61,7 @@ class RecipeController extends AbstractController
         }
     }
 
-    #[Route('/admin/update', name: 'app_api_update_recipes')]
+    #[Route('/admin/update', name: 'app_api_update_recipe')]
     public function update(Request $request): JsonResponse
     {
         try {
@@ -67,6 +70,20 @@ class RecipeController extends AbstractController
             $this->recipeManager->update($data);
 
             return $this->json(['status' => 'success', 'message' => 'Recette éditée'], Response::HTTP_OK, [], ['groups' => "recipe_information"]);
+        } catch (\Exception $e) {
+            return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    #[Route('/admin/delete', name: 'app_api_delete_recipe')]
+    public function delete(Request $request): JsonResponse
+    {
+        try {
+
+            $data = json_decode($request->getContent(), true);
+            $this->recipeManager->delete($data);
+
+            return $this->json(['status' => 'success', 'message' => 'Recette supprimée'], Response::HTTP_OK);
         } catch (\Exception $e) {
             return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -103,13 +120,15 @@ class RecipeController extends AbstractController
     public function search(Request $request, RecipeRepository $recipeRepository): JsonResponse
     {
         try {
-            $searchValue = $request->query->get('searchValue', '');
+
+            $searchValue = $request->query->get('searchValue');
 
             return $this->json(['status' => 'success', 'recipes' => $recipeRepository->findBySearch($searchValue)], Response::HTTP_OK, [], ['groups' => "recipe_information"]);
         } catch (\Exception $e) {
             return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
+
 
     #[Route('/specific/{title}', name: 'app_api_specific_recipe')]
     public function specific(string $title): JsonResponse

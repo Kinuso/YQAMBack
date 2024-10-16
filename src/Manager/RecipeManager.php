@@ -5,7 +5,6 @@ namespace App\Manager;
 use App\Entity\Ingredient;
 use App\Entity\Recipe;
 use App\Entity\Step;
-use App\Entity\UpVote;
 use App\Entity\User;
 use App\Repository\CategoriesRepository;
 use App\Repository\RecipeRepository;
@@ -50,20 +49,54 @@ class RecipeManager
 
     public function update(array $data): Recipe
     {
-        $recipe = $this->recipeRepository->findOneBy(["id" => $data["recipeId"]]);
+        $recipe = $this->recipeRepository->findOneBy(["id" => $data["id"]]);
+
+        $existingSteps = $recipe->getStep();
+        foreach ($existingSteps as $step) {
+            $this->entityManagerInterface->remove($step);
+        }
+
+        $existingIngredients = $recipe->getIngredient();
+        foreach ($existingIngredients as $ingredient) {
+            $this->entityManagerInterface->remove($ingredient);
+        }
+
+        $existingTypes = $recipe->getType();
+        foreach ($existingTypes as $type) {
+            $recipe->removeType($type);
+        }
+
+        $existingcategories = $recipe->getcategories();
+        foreach ($existingcategories as $category) {
+            $recipe->removeCategory($category);
+        }
+
 
         $recipe = $this->recipeCredentials($data, $recipe);
 
         return $recipe;
     }
 
+    public function delete(int $data): void
+    {
+        $recipe = $this->recipeRepository->findOneBy(["id" => $data]);
 
+        $this->entityManagerInterface->remove($recipe);
+        $this->entityManagerInterface->flush();
+    }
 
 
     private function recipeCredentials(array $data, recipe $recipe): Recipe
     {
 
         $user = new User;
+
+        foreach ($data as $key) {
+            if ($key == null) {
+                throw new Exception("Veuillez remplir tout les champs");
+            }
+        }
+
         $user = $this->userRepository->findOneBy(['email' => $data["user"]]);
         $title = htmlspecialchars(strip_tags(trim($data["title"])));
         $description = htmlspecialchars(strip_tags(trim($data["description"])));
@@ -72,7 +105,8 @@ class RecipeManager
         $fat = htmlspecialchars(strip_tags(trim($data["fat"])));
         $calories = htmlspecialchars(strip_tags(trim($data["calories"])));
         $forHowManyPeople = htmlspecialchars(strip_tags(trim($data["forHowManyPeople"])));
-        $imageUrl = htmlspecialchars(strip_tags(trim($data["imgUrl"])));
+        $imageUrl = htmlspecialchars(strip_tags(trim($data["imageUrl"])));
+
 
         $recipe->setUserID($user);
         $recipe->setTitle($title);
@@ -89,7 +123,7 @@ class RecipeManager
             $recipe->addCategory($this->categoriesRepository->findOneBy(["name" => $categoryData]));
         }
 
-        $types = $data["types"];
+        $types = $data["type"];
         foreach ($types as $typeData) {
             $recipe->addType($this->typeRepository->findOneBy(["name" => $typeData]));
         }
@@ -98,23 +132,20 @@ class RecipeManager
 
 
         $this->entityManagerInterface->persist($recipe);
-        $this->entityManagerInterface->flush();
 
-
-        $steps = $data["steps"];
+        $steps = $data["step"];
         $i = 1;
         foreach ($steps as $stepData) {
             $step = new Step;
-            $step->setDescription($stepData["name"]);
+            $step->setDescription($stepData["description"]);
             $step->setNumber($i);
             $step->setRecipe($recipe);
             $i++;
 
             $this->entityManagerInterface->persist($step);
-            $this->entityManagerInterface->flush();
         }
 
-        $ingredients = $data["ingredients"];
+        $ingredients = $data["ingredient"];
         foreach ($ingredients as $ingredientData) {
 
             $ingredient = new Ingredient;
@@ -123,9 +154,9 @@ class RecipeManager
             $ingredient->setRecipe($recipe);
 
             $this->entityManagerInterface->persist($ingredient);
-            $this->entityManagerInterface->flush();
         }
 
+        $this->entityManagerInterface->flush();
         return $recipe;
     }
 }

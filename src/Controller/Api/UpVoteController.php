@@ -57,4 +57,17 @@ class UpVoteController extends AbstractController
             return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
+
+    #[Route('/likedRecipe/{id}', name: 'app_api_liked_recipe')]
+    public function liked(int $id): JsonResponse
+    {
+        try {
+
+            $likedRecipes = $this->upVoteManager->liked($id);
+
+            return $this->json(['status' => 'success', 'recipes' => $likedRecipes], Response::HTTP_OK, [], ['groups' => "liked_recipe_information"]);
+        } catch (\Exception $e) {
+            return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
 }

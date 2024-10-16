@@ -25,10 +25,9 @@ class SecurityController extends AbstractController
             $data = json_decode($request->getContent(), true);
             $response = $this->securityManager->login($data);
 
-            return $this->json($response, Response::HTTP_CREATED);
-
+            return $this->json(['status' => 'success', 'user' => $response], Response::HTTP_CREATED);
         } catch (\Exception $e) {
-            return $this->json(['status'=>'error', 'message' => $e->getMessage()],Response::HTTP_BAD_REQUEST);
+            return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -40,12 +39,13 @@ class SecurityController extends AbstractController
 
             $data = json_decode($request->getContent(), true);
             $this->securityManager->register($data);
-            
 
-            return $this->json(['status'=> 'success'], Response::HTTP_CREATED);
 
+            return $this->json(['status' => 'success', 'message' => 'compte créer avec succes'], Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return $this->json(['status' => 'error', 'message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
+
+
 }

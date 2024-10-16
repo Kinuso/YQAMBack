@@ -15,11 +15,11 @@ class Recipe
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['recipe_information'])]
+    #[Groups(['recipe_information', 'liked_recipe_information'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['recipe_information'])]
+    #[Groups(['recipe_information', 'liked_recipe_information'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
@@ -48,13 +48,12 @@ class Recipe
 
     #[ORM\ManyToOne(inversedBy: 'recipe')]
     #[ORM\JoinColumn(nullable: false)]
-    // #[Groups(['recipe_information'])]
     private ?User $userID = null;
 
     /**
      * @var Collection<int, UpVote>
      */
-    #[ORM\OneToMany(targetEntity: UpVote::class, mappedBy: 'recipe')]
+    #[ORM\OneToMany(targetEntity: UpVote::class, mappedBy: 'recipe', orphanRemoval: true)]
     #[Groups(['recipe_information'])]
     private Collection $upVote;
 
@@ -75,7 +74,7 @@ class Recipe
     /**
      * @var Collection<int, Step>
      */
-    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'recipe')]
+    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'recipe', orphanRemoval: true)]
     #[Groups(['recipe_information'])]
     private Collection $step;
 
@@ -87,7 +86,7 @@ class Recipe
     private Collection $ingredient;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['recipe_information'])]
+    #[Groups(['recipe_information', 'liked_recipe_information'])]
     private ?string $imageUrl = null;
 
     public function __construct()

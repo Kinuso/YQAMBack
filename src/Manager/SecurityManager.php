@@ -54,10 +54,33 @@ class SecurityManager extends AbstractController
     {
         $user = new User;
 
-        $email = $data['email'];
+        if ($this->userRepository->findOneBy(["email" => $data["email"]])) {
+            throw new Exception("Adresse email déjà utilisée");
+        }
+
+        $this->userCredentials($data, $user);
+    }
+
+    public function update(array $data): void
+    {
+
+        $user = $this->userRepository->findOneBy(["email" => $data["email"]]);
+        $this->userCredentials($data, $user);
+    }
+
+    private function userCredentials(array $data, User $user): void
+    {
+
+        foreach ($data as $key) {
+            if ($key == null) {
+                throw new Exception("Veuillez remplir tout les champs");
+            }
+        }
+
+        $email = htmlspecialchars(strip_tags(trim($data['email'])));
         $password = $this->userPasswordHasherInterface->hashPassword($user, $data['password']);
-        $firstname = $data['firstname'];
-        $lastname = $data['lastname'];
+        $firstname = htmlspecialchars(strip_tags(trim($data['firstname'])));
+        $lastname = htmlspecialchars(strip_tags(trim($data['lastname'])));
         $createdAt = new DateTime(date('Y-m-d H:i:s'));
         $dgpr = new DateTime(date('Y-m-d H:i:s'));
 

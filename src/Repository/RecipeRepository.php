@@ -16,10 +16,11 @@ class RecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, Recipe::class);
     }
 
-    public function recent(): array
+    public function recent(int $quantity): array
     {
-        $qb = $this->createQueryBuilder('e');
-        $qb->setMaxResults(5);
+        $qb = $this->createQueryBuilder('r');
+        $qb->setMaxResults($quantity)
+            ->orderBy('r.id', 'DESC');
 
         return $qb->getQuery()->getResult();
     }

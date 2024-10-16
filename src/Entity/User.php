@@ -54,13 +54,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Recipe>
      */
-    #[ORM\OneToMany(targetEntity: Recipe::class, mappedBy: 'userID')]
+    #[ORM\OneToMany(targetEntity: Recipe::class, mappedBy: 'userID', orphanRemoval: true)]
     private Collection $recipe;
 
     /**
      * @var Collection<int, UpVote>
      */
-    #[ORM\OneToMany(targetEntity: UpVote::class, mappedBy: 'userID')]
+    #[ORM\OneToMany(targetEntity: UpVote::class, mappedBy: 'userID', orphanRemoval: true)]
     private Collection $upVote;
 
     public function __construct()
