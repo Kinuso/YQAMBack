@@ -96,7 +96,7 @@ class RecipeManager
                 throw new Exception("Veuillez remplir tout les champs");
             }
         }
-
+ 
         $user = $this->userRepository->findOneBy(['email' => $data["user"]]);
         $title = htmlspecialchars(strip_tags(trim($data["title"])));
         $description = htmlspecialchars(strip_tags(trim($data["description"])));
